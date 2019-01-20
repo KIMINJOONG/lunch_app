@@ -1,24 +1,29 @@
+/*global daum */
 import React, { Component } from 'react';
 import './App.css';
+import PageTemplate from './components/PageTemplate/PageTemplate';
+import LunchSearch from './components/LunchSearch/LunchSearch';
+import Map from './components/Map/Map';
 
 class App extends Component {
+
+  handleSearch = () => {
+
+  }
   render() {
+    const {
+      handleSearch
+    } = this;
     return (
       <div>
         <div className="container">
           <div className="banner">
           </div>
-          <div className="main">
-            <div className="leftMenu">
-              <span>왼쪽메뉴</span>
-            </div>
-            <div className="map">
-              <span>지도영역</span>
-            </div>
-            <div className="list">
-              <span>리스트 영역</span>
-            </div>
-          </div>
+          <PageTemplate>
+            <LunchSearch onSearch={handleSearch}/>
+            <Map></Map>
+          </PageTemplate>
+                    
         </div>
       </div>
     );
