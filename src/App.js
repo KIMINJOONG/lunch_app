@@ -7,6 +7,13 @@ import Map from './components/Map/Map';
 
 class App extends Component {
 
+  componentDidMount() {
+    const el = document.getElementById('map');
+    let daumMap = new daum.maps.Map(el, {
+      center: new daum.maps.LatLng(33.450701, 126.570667),
+    });
+  }
+
   handleSearch = () => {
 
   }
@@ -14,6 +21,7 @@ class App extends Component {
     const {
       handleSearch
     } = this;
+    
     return (
       <div>
         <div className="container">
@@ -23,7 +31,7 @@ class App extends Component {
             <LunchSearch onSearch={handleSearch}/>
             <Map></Map>
           </PageTemplate>
-                    
+
         </div>
       </div>
     );
