@@ -5,6 +5,7 @@ import PageTemplate from './components/PageTemplate/PageTemplate';
 import LunchSearch from './components/LunchSearch/LunchSearch';
 import Map from './components/Map/Map';
 
+let daumMap = "";
 class App extends Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
@@ -13,15 +14,52 @@ class App extends Component {
         const lng = position.coords.longitude;
         this.loadMap(lat, lng);
       }
-    )
-    
+    )    
   }
 
   loadMap = (lat, lng) => {
-    const el = document.getElementById('map');
-    let daumMap = new daum.maps.Map(el, {
-      center: new daum.maps.LatLng(lat, lng),
+    let markerPosition = new daum.maps.LatLng(lat, lng)
+    let marker = new daum.maps.Marker ({
+      position : markerPosition
     });
+
+    const el = document.getElementById('map');
+    const staticMapOption = {
+      center: new daum.maps.LatLng(lat, lng),
+      level: 3, 
+    };
+
+    daumMap = new daum.maps.Map(el, staticMapOption);
+    marker.setMap(daumMap);
+
+    
+    const ps = new daum.maps.services.Places(daumMap); 
+
+    ps.categorySearch('FD6', this.placeSearchCB, {useMapBounds:true});
+  }
+
+
+  placeSearchCB = (data, status, pagination) => {
+    if(status === daum.maps.services.Status.OK) {
+      for(let i = 0; i<data.length; i++) {
+        this.displayMarker(data[i]);
+
+      }
+
+    }
+  }
+  
+  displayMarker = (place) => {
+    const marker = new daum.maps.Marker({
+      map:daumMap
+      , position: new daum.maps.LatLng(place.y, place.x)
+    });
+    const infowindow = new daum.maps.InfoWindow({zIndex:1});
+    daum.maps.event.addListener(marker, 'click', function() {
+      infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+      infowindow.open(daumMap, marker);
+    })
+
   }
 
   handleSearch = () => {
