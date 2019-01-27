@@ -3,10 +3,14 @@ import React, { Component } from 'react';
 import './App.css';
 import PageTemplate from './components/PageTemplate/PageTemplate';
 import LunchSearch from './components/LunchSearch/LunchSearch';
+import LunchItemList from './components/LunchItemList/LunchItemList';
 import Map from './components/Map/Map';
 
 let daumMap = "";
 class App extends Component {
+
+  state = {}
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -41,9 +45,13 @@ class App extends Component {
 
   placeSearchCB = (data, status, pagination) => {
     if(status === daum.maps.services.Status.OK) {
+      const lunchData = data;
+      this.setState({
+        lunchData
+      });
+      console.log(this.state.lunchData);
       for(let i = 0; i<data.length; i++) {
-        this.displayMarker(data[i]);
-
+        this.displayMarker(lunchData[i]);
       }
 
     }
@@ -70,6 +78,7 @@ class App extends Component {
       handleSearch
     } = this;
 
+    const { lunchData } = this.state;
     return (
       <div>
         <div className="container">
@@ -78,6 +87,7 @@ class App extends Component {
           <PageTemplate>
             <LunchSearch onSearch={handleSearch}/>
             <Map></Map>
+            <LunchItemList lunchDatas = {lunchData} />
           </PageTemplate>
 
         </div>
