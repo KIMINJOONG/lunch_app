@@ -49,7 +49,6 @@ class App extends Component {
       this.setState({
         lunchData
       });
-      console.log(this.state.lunchData);
       for(let i = 0; i<data.length; i++) {
         this.displayMarker(lunchData[i]);
       }

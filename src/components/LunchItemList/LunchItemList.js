@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LunchItem from './LunchItem';
+import LunchItem from "../LunchItem/LunchItem";
 
 class LunchItemList extends Component {
     
